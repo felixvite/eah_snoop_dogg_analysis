@@ -19,12 +19,19 @@ rtwt1 <- get_snoop[,c('created_at', 'id', 'full_text', 'display_text_range', 're
 rtwt2 <- get_snoop[,c('created_at', 'id', 'full_text', 'display_text_range', 'retweet_count', 
                       'favorite_count')]
 
+#create help column for media_type
+test <- get_snoop$entities
+media_type_vec <- list()
+
 for(media in test) {
-  media_type = c(media_type, media[["media"]][["type"]])
+  media_type_vec = c(media_type_vec, media[["media"]][["type"]])
 }
 
-media_type <- media_type[0:3175]
-rtwt2$media_type <- media_type
+#media_type <- media_type[1:3200]
+media_type_vector <- unlist(media_type_vec)
+rtwt2['media_type'] <- media_type_vector
+
+
 rtwt2$charGroup[rtwt2$display_text_range < 90] <- "small"
 rtwt2$charGroup[rtwt2$display_text_range >= 90 & rtwt2$display_text_range < 180] <- "middle"
 rtwt2$charGroup[rtwt2$display_text_range >= 90 & rtwt2$display_text_range >= 180] <- "long"
